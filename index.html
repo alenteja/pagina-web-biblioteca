@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biblioteca Yachay Wasi</title>
+  <meta name="description" content="Biblioteca pública Yachay Wasi, la casa del saber. Catálogo en línea, reservas, talleres, eventos y carnet de socio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#catalogo">Saltar al catálogo</a>
+
+<!-- ENCABEZADO -->
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="#inicio" aria-label="Yachay Wasi, inicio">
+      <svg class="chakana" viewBox="0 0 100 100" aria-hidden="true">
+        <polygon points="35,0 65,0 65,20 80,20 80,35 100,35 100,65 80,65 80,80 65,80 65,100 35,100 35,80 20,80 20,65 0,65 0,35 20,35 20,20 35,20" fill="currentColor"/>
+        <circle cx="50" cy="50" r="13" fill="var(--bg)"/>
+      </svg>
+      <span class="brand-text">Yachay Wasi<small>Biblioteca pública</small></span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">Menú</button>
+
+    <nav id="mainNav" class="nav" aria-label="Principal">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#horarios">Horarios</a>
+      <a href="#socio">Hazte socio</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="tools">
+      <button class="btn ghost small" id="btnReservas" type="button">Mis reservas <span class="count" id="reservasCount">0</span></button>
+      <button class="btn ghost small" id="themeToggle" type="button" aria-label="Cambiar entre tema claro y oscuro">Tema</button>
+    </div>
+  </div>
+  <div class="aguayo" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <!-- INICIO -->
+  <section class="hero" id="inicio">
+    <svg class="hero-chakana" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon points="35,0 65,0 65,20 80,20 80,35 100,35 100,65 80,65 80,80 65,80 65,100 35,100 35,80 20,80 20,65 0,65 0,35 20,35 20,20 35,20" fill="currentColor"/>
+    </svg>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="etymology"><b>yachay</b> saber <span aria-hidden="true">+</span> <b>wasi</b> casa</p>
+        <h1>La casa del saber de nuestro barrio</h1>
+        <p class="lead">Más de 24 mil libros, una hemeroteca regional, sala infantil y talleres gratuitos. Busca un título, resérvalo desde aquí y pasa a recogerlo.</p>
+
+        <form class="hero-search" id="heroSearch" role="search">
+          <label class="sr" for="heroQ">Buscar en el catálogo</label>
+          <input id="heroQ" type="search" placeholder="Busca por título o autor: Arguedas, Vallejo, Palma…" autocomplete="off">
+          <button class="btn primary" type="submit">Buscar</button>
+        </form>
+      </div>
+
+      <aside class="today" aria-label="Hoy en la biblioteca">
+        <p class="today-label">Hoy en Yachay Wasi</p>
+        <p class="status" id="heroStatus"><span class="dot"></span><span id="heroStatusText">Consultando horario…</span></p>
+        <hr>
+        <p class="today-label">Próxima actividad</p>
+        <p class="today-event" id="heroEvent"></p>
+        <a class="link-arrow" href="#eventos">Ver todos los eventos</a>
+      </aside>
+    </div>
+
+    <div class="wrap stats" aria-label="La biblioteca en cifras">
+      <div><strong>24&nbsp;500</strong><span>libros y documentos</span></div>
+      <div><strong>3&nbsp;200</strong><span>socios activos</span></div>
+      <div><strong>18</strong><span>talleres al mes</span></div>
+      <div><strong id="yearsOpen">64</strong><span>años abiertos al público</span></div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <section class="section" id="catalogo">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Catálogo</p>
+        <h2>Encuentra tu próxima lectura</h2>
+        <p class="sub">Una muestra de nuestra colección, con énfasis en autores peruanos. Reserva en un clic y recoge el libro en el mostrador.</p>
+      </header>
+
+      <div class="controls">
+        <div class="field grow">
+          <label for="q">Título o autor</label>
+          <input id="q" type="search" placeholder="Ej. Ribeyro, Los ríos profundos" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="sort">Ordenar por</label>
+          <select id="sort">
+            <option value="titulo">Título (A-Z)</option>
+            <option value="autor">Autor (A-Z)</option>
+            <option value="año-desc">Más recientes</option>
+            <option value="año-asc">Más antiguos</option>
+          </select>
+        </div>
+        <label class="check" for="onlyAvail"><input id="onlyAvail" type="checkbox"> Solo disponibles</label>
+      </div>
+
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por categoría"></div>
+      <p class="results" id="results" aria-live="polite"></p>
+      <div class="books" id="books"></div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section alt" id="servicios">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Servicios</p>
+        <h2>Todo lo que puedes hacer aquí</h2>
+      </header>
+
+      <div class="services">
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h13"/></svg>
+          <h3>Préstamo a domicilio</h3>
+          <p>Llévate hasta 3 libros por 14 días, con una renovación en línea o en mostrador.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+          <h3>Sala de cómputo y Wi-Fi</h3>
+          <p>12 equipos con internet gratuito para tareas, trámites y búsqueda de empleo. Sesiones de 1 hora.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+          <h3>Sala infantil Wawakuna</h3>
+          <p>Cuentacuentos, juegos y una colección ilustrada para niñas y niños de 3 a 12 años.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg>
+          <h3>Hemeroteca regional</h3>
+          <p>Diarios, revistas y fotografías históricas de la región, disponibles para consulta en sala.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          <h3>Biblioteca digital</h3>
+          <p>Descarga libros electrónicos y audiolibros con tu carnet de socio, desde cualquier dispositivo.</p>
+        </article>
+        <article>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 5"/></svg>
+          <h3>Clubes y talleres</h3>
+          <p>Club de lectura, taller de escritura, quechua básico y más. Todos con cupos limitados y gratis.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="section" id="eventos">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Eventos</p>
+        <h2>Agenda de los próximos días</h2>
+        <p class="sub">Entrada libre hasta completar el aforo. Los talleres piden inscripción en el mostrador.</p>
+      </header>
+      <ul class="events" id="events"></ul>
+    </div>
+  </section>
+
+  <!-- HORARIOS -->
+  <section class="section alt" id="horarios">
+    <div class="wrap two">
+      <div>
+        <header class="section-head">
+          <p class="eyebrow">Horarios</p>
+          <h2>Cuándo visitarnos</h2>
+        </header>
+        <p class="status big" id="hoursStatus"><span class="dot"></span><span id="hoursStatusText"></span></p>
+        <div class="table-wrap">
+          <table class="hours">
+            <caption class="sr">Horario de atención por día</caption>
+            <thead><tr><th scope="col">Día</th><th scope="col">Atención</th></tr></thead>
+            <tbody id="hoursBody"></tbody>
+          </table>
+        </div>
+        <p class="note">Hora de Lima (UTC-5). En feriados nacionales la biblioteca permanece cerrada.</p>
+      </div>
+
+      <div class="visit">
+        <h3>Cómo llegar</h3>
+        <address>
+          Jr. Garcilaso de la Vega 450<br>
+          Cercado de Lima, Lima, Perú
+        </address>
+        <ul class="plain">
+          <li><b>En bus:</b> paraderos a 2 cuadras, líneas del corredor principal.</li>
+          <li><b>En bicicleta:</b> estacionamiento gratuito dentro del patio.</li>
+          <li><b>Accesibilidad:</b> rampa de ingreso y servicios higiénicos adaptados.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIO -->
+  <section class="section" id="socio">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow">Hazte socio</p>
+        <h2>Tu carnet, en menos de un minuto</h2>
+        <p class="sub">Elige un plan, llena tus datos y obtén tu carnet virtual. Lo activas presentando tu DNI en el mostrador.</p>
+      </header>
+
+      <div class="plans" id="plans" role="radiogroup" aria-label="Plan de membresía">
+        <label class="plan">
+          <input type="radio" name="plan" value="Lector escolar" checked>
+          <span class="plan-body"><b>Lector escolar</b><em>S/ 0</em><small>Estudiantes de colegio con constancia. 2 libros a la vez.</small></span>
+        </label>
+        <label class="plan">
+          <input type="radio" name="plan" value="Lector general">
+          <span class="plan-body"><b>Lector general</b><em>S/ 15 <i>al año</i></em><small>3 libros a la vez, biblioteca digital y talleres.</small></span>
+        </label>
+        <label class="plan">
+          <input type="radio" name="plan" value="Familiar">
+          <span class="plan-body"><b>Familiar</b><em>S/ 30 <i>al año</i></em><small>Hasta 4 integrantes, 8 libros en total.</small></span>
+        </label>
+      </div>
+
+      <div class="member-grid">
+        <form id="memberForm" novalidate>
+          <div class="field">
+            <label for="mNombre">Nombres y apellidos</label>
+            <input id="mNombre" name="nombre" type="text" autocomplete="name" required>
+            <p class="err" id="eNombre" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="mDni">DNI</label>
+            <input id="mDni" name="dni" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos" required>
+            <p class="err" id="eDni" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="mCorreo">Correo electrónico</label>
+            <input id="mCorreo" name="correo" type="email" autocomplete="email" required>
+            <p class="err" id="eCorreo" role="alert"></p>
+          </div>
+          <button class="btn primary" type="submit">Generar mi carnet</button>
+        </form>
+
+        <div class="carnet-slot" aria-live="polite">
+          <div class="carnet" id="carnet" hidden>
+            <div class="aguayo" aria-hidden="true"></div>
+            <div class="carnet-body">
+              <p class="carnet-lib">Yachay Wasi · Biblioteca pública</p>
+              <p class="carnet-name" id="cName"></p>
+              <p class="carnet-plan" id="cPlan"></p>
+              <p class="carnet-num" id="cNum"></p>
+              <p class="carnet-valid" id="cValid"></p>
+            </div>
+          </div>
+          <p class="carnet-empty" id="carnetEmpty">Tu carnet aparecerá aquí cuando completes el formulario.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="section alt" id="nosotros">
+    <div class="wrap two">
+      <div>
+        <header class="section-head">
+          <p class="eyebrow">Nuestra historia</p>
+          <h2>Una casa abierta desde 1962</h2>
+        </header>
+        <p>Yachay Wasi nació en un salón prestado, con 300 libros donados por maestros y vecinos. Hoy ocupa una casona restaurada y conserva la misma idea: que leer no dependa del bolsillo de nadie.</p>
+        <p>El nombre viene del quechua. <i>Yachay</i> es el saber y <i>wasi</i> es la casa. Quisimos que quien llegue se sienta, ante todo, en casa.</p>
+      </div>
+      <ul class="timeline">
+        <li><b>1962</b><span>Se abre el primer salón de lectura con 300 libros.</span></li>
+        <li><b>1985</b><span>Nace la hemeroteca regional con diarios y fotografías.</span></li>
+        <li><b>2003</b><span>Se inaugura la sala infantil Wawakuna.</span></li>
+        <li><b>2018</b><span>Llegan la sala de cómputo y el préstamo digital.</span></li>
+        <li><b>2026</b><span>Superamos los 3 mil socios activos.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap narrow">
+      <header class="section-head">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2>Antes de venir</h2>
+      </header>
+      <details>
+        <summary>¿Necesito ser socio para leer en sala?</summary>
+        <p>No. La sala de lectura, la hemeroteca y el Wi-Fi son de acceso libre. El carnet solo es necesario para llevar libros a casa y usar la biblioteca digital.</p>
+      </details>
+      <details>
+        <summary>¿Cuánto tiempo puedo quedarme con un libro?</summary>
+        <p>Catorce días, renovables una vez si nadie lo ha reservado. Si te pasas, no hay multa en dinero: se suspende el préstamo por los mismos días de atraso.</p>
+      </details>
+      <details>
+        <summary>¿Cómo funciona una reserva?</summary>
+        <p>Al reservar, apartamos el ejemplar por 3 días hábiles. Si el libro está prestado, entras a la lista de espera y te avisamos cuando regrese.</p>
+      </details>
+      <details>
+        <summary>¿Puedo donar libros?</summary>
+        <p>Sí, y lo agradecemos. Recibimos donaciones en el mostrador de lunes a viernes por la mañana. Evaluamos el estado y la pertinencia antes de integrarlos a la colección.</p>
+      </details>
+      <details>
+        <summary>¿Los talleres tienen costo?</summary>
+        <p>Todos los talleres son gratuitos para socios y no socios. Los cupos son limitados y se asignan por orden de inscripción.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section alt" id="contacto">
+    <div class="wrap two">
+      <div>
+        <header class="section-head">
+          <p class="eyebrow">Contacto</p>
+          <h2>Escríbenos</h2>
+          <p class="sub">Consultas, sugerencias de compra o visitas guiadas para colegios.</p>
+        </header>
+        <ul class="plain contact-list">
+          <li><b>Teléfono:</b> (01) 555-0123</li>
+          <li><b>Correo:</b> contacto@yachaywasi.pe</li>
+          <li><b>WhatsApp:</b> 999 888 777</li>
+        </ul>
+        <p class="note">Los datos de contacto de esta página son de ejemplo.</p>
+      </div>
+
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="cNombre">Nombre</label>
+          <input id="cNombre" type="text" autocomplete="name" required>
+          <p class="err" id="ecNombre" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="cCorreo">Correo electrónico</label>
+          <input id="cCorreo" type="email" autocomplete="email" required>
+          <p class="err" id="ecCorreo" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="cMsg">Mensaje</label>
+          <textarea id="cMsg" rows="4" required></textarea>
+          <p class="err" id="ecMsg" role="alert"></p>
+        </div>
+        <button class="btn primary" type="submit">Enviar mensaje</button>
+        <p class="ok-msg" id="contactOk" role="status" hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="aguayo" aria-hidden="true"></div>
+  <div class="wrap foot">
+    <p><b>Yachay Wasi</b> · Biblioteca pública<br><small>La casa del saber</small></p>
+    <p><small>© <span id="year"></span> Yachay Wasi. Sitio de demostración.</small></p>
+    <a href="#inicio">Volver arriba</a>
+  </div>
+</footer>
+
+<!-- DETALLE DE LIBRO -->
+<dialog id="bookDialog" aria-labelledby="dTitle">
+  <div class="dlg-head">
+    <h3 id="dTitle"></h3>
+    <button class="icon-btn" type="button" data-close aria-label="Cerrar">Cerrar</button>
+  </div>
+  <p class="dlg-author" id="dAuthor"></p>
+  <dl class="dlg-meta" id="dMeta"></dl>
+  <p id="dDesc"></p>
+  <div class="dlg-actions">
+    <span class="pill" id="dPill"></span>
+    <button class="btn primary" type="button" id="dReserve"></button>
+  </div>
+</dialog>
+
+<!-- MIS RESERVAS -->
+<dialog id="resDialog" aria-labelledby="rTitle">
+  <div class="dlg-head">
+    <h3 id="rTitle">Mis reservas</h3>
+    <button class="icon-btn" type="button" data-close aria-label="Cerrar">Cerrar</button>
+  </div>
+  <ul class="res-list" id="resList"></ul>
+  <p class="note">Las reservas se guardan en este navegador.</p>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
